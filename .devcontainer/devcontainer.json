@@ -1,0 +1,20 @@
+{
+    "name": "The Seed devcontainer",
+    "build": {
+        "context": "..",
+        "dockerfile": "./Dockerfile"
+    },
+    "remoteUser": "vscode",
+    "mounts": [
+        "type=bind,source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh"
+    ],
+    "extensions": [
+        "visualstudioexptteam.vscodeintellicode",
+        "mads-hartmann.bash-ide-vscode",
+        "ms-azuretools.vscode-docker",
+        "bungcip.better-toml",
+        "vadimcn.vscode-lldb",
+        "formulahendry.code-runner",
+        "rust-lang.rust-analyzer"
+    ]
+}
