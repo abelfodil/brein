@@ -53,6 +53,12 @@ fn get_raw_content(link: &str) -> Option<String> {
     reqwest::blocking::get(link).ok()?.text().ok()
 }
 
+struct Content {
+    uri: String,
+    raw_content: String,
+    text_content: String,
+}
+
 fn main() {
     establish_connection();
 
@@ -60,10 +66,17 @@ fn main() {
     let contents = list_md_files(&md_dir)
         .filter_map(|file| extract_links(&file))
         .flatten()
-        .filter_map(|l| get_raw_content(&l));
+        .filter_map(|link|  {{
+            let raw_content = get_raw_content(&link)?;
+            Some(Content {
+                uri: link,
+                text_content: html2text::from_read(raw_content.as_bytes(), 120),
+                raw_content: raw_content,
+            })
+        }});
 
     for content in contents {
-        println!("{}", content);
+        println!("{}", content.text_content);
     }
 
     println!("Hello, world!");
