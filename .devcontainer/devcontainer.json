@@ -14,7 +14,9 @@
 				"eamodio.gitlens",
 				"KevinRose.vsc-python-indent",
 				"tushortz.python-extended-snippets",
-				"mgesbert.python-path"
+				"mgesbert.python-path",
+				"ms-python.black-formatter",
+				"ms-python.isort"
 			]
 		}
 	}
