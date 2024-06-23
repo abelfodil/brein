@@ -2,7 +2,8 @@ from datetime import datetime
 from models.content import Content
 from notion_client import Client as NotionClient
 from models.page import Page, PageType
-from utils.dict import filter_keys, get_any_values, list_to_dict, recursive_get
+from utils.dict import filter_keys, list_to_dict, recursive_get
+from utils.log import log
 
 
 class Notion:
@@ -47,7 +48,7 @@ class Notion:
     def _flatten_block_with_children(block):
         return [block, *(block.get("children") or [])]
 
-    def _adapt_content_to_model(page: Page, notion_block):
+    def _adapt_content_to_model(page: Page, notion_block: dict):
         if (not notion_block) or notion_block["type"] in set(
             ["child_page", "heading_1", "heading_2", "heading_3"]
         ):
@@ -72,25 +73,50 @@ class Notion:
             )
         )
 
+    def _merge_contents(contents: list[Content]):
+        if len(contents) == 0:
+            return []
+
+        content = contents[0]
+        content.raw_content = "\n".join((content.raw_content for content in contents))
+        return [content]
+
+    def _adapt_contents_to_model(page, blocks):
+        contents = (Notion._adapt_content_to_model(page, block) for block in blocks)
+        contents = [content for content in contents if content]
+        pages = [content for content in contents if isinstance(content, Page)]
+        contents = Notion._merge_contents(
+            [content for content in contents if isinstance(content, Content)]
+        )
+        return [*pages, *contents]
+
     def _extract_page_contents(self, page: Page):
+        log.info(f"Fetching {page.title or page.url} content.")
         return self.notion.blocks.children.list(page.id)["results"]
 
     def _extract_content_from_pages(self, pages: list[Page]):
         contents = ((page, self._extract_page_contents(page)) for page in pages)
-        contents = ((page, block) for page, blocks in contents for block in blocks)
         contents = (
-            (page, flattened)
-            for page, block in contents
-            for flattened in Notion._flatten_block_with_children(block)
+            (
+                page,
+                (
+                    child
+                    for block in blocks
+                    for child in Notion._flatten_block_with_children(block)
+                ),
+            )
+            for page, blocks in contents
         )
-        contents = (
-            Notion._adapt_content_to_model(page, block) for page, block in contents
-        )
+        contents = [
+            content
+            for page, blocks in contents
+            for content in Notion._adapt_contents_to_model(page, blocks)
+        ]
 
-        contents = [content for content in contents if content]
         return contents
 
     def extract(self):
         pages = self._extract_all_pages_recursively()
         contents = self._extract_content_from_pages(pages)
+
         return [*pages, *contents]
