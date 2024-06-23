@@ -1,0 +1,21 @@
+{
+	"name": "Brein devcontainer",
+	"build": {
+		"dockerfile": "./Dockerfile"
+	},
+	"remoteUser": "vscode",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"visualstudioexptteam.vscodeintellicode",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-azuretools.vscode-docker",
+				"eamodio.gitlens",
+				"KevinRose.vsc-python-indent",
+				"tushortz.python-extended-snippets",
+				"mgesbert.python-path"
+			]
+		}
+	}
+}
