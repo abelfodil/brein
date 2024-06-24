@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Optional
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
+from models.page import Page
 from utils.uuid import uuid_generator
 
 
@@ -11,3 +11,4 @@ class Content(SQLModel, table=True):
     raw_content: str
     text: str | None
     last_edit: datetime = Field(default_factory=datetime.now)
+    page: Page = Relationship(back_populates="content")

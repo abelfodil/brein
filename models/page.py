@@ -1,6 +1,7 @@
+from datetime import datetime
 from enum import Enum
 from typing import Optional
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from utils.uuid import uuid_generator
 
@@ -15,3 +16,4 @@ class Page(SQLModel, table=True):
     title: Optional[str]
     url: str
     type: PageType
+    content: Optional["Content"] = Relationship(back_populates="page", sa_relationship_kwargs={"lazy": "joined"})  # type: ignore

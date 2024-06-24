@@ -1,2 +1,3 @@
 notion-client
 sqlmodel
+html2text

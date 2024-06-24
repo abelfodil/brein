@@ -1,5 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+
+a_month_ago = datetime.now() - timedelta(days=30)
 
 
-def has_been_less_than(days: int, date: datetime):
-    return (datetime.now() - date).days < days
+def has_been_less_than(date: datetime, period: datetime):
+    return date > period
