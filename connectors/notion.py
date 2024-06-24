@@ -1,4 +1,5 @@
 from datetime import datetime
+from itertools import chain
 from models.content import Content
 from notion_client import Client as NotionClient
 from models.page import Page, PageType
@@ -23,7 +24,7 @@ class Notion:
     def _extract_all_pages_recursively(self):
         results = self.notion.search()["results"]
         results = (filter_keys(page, ["url", "plain_text", "id"]) for page in results)
-        results = [Notion._adapt_page_to_model(page) for page in results]
+        results = (Notion._adapt_page_to_model(page) for page in results)
         return results
 
     def _extract_rich_content_or_default(block_content: dict):
@@ -85,11 +86,11 @@ class Notion:
     def _adapt_contents_to_model(page, blocks):
         contents = (Notion._adapt_content_to_model(page, block) for block in blocks)
         contents = [content for content in contents if content]
-        pages = [content for content in contents if isinstance(content, Page)]
+        pages = (content for content in contents if isinstance(content, Page))
         contents = Notion._merge_contents(
             [content for content in contents if isinstance(content, Content)]
         )
-        return [*pages, *contents]
+        return chain(pages, contents)
 
     def _extract_page_contents(self, page: Page):
         log.info(f"Fetching {page.title or page.url} content.")
@@ -108,16 +109,16 @@ class Notion:
             )
             for page, blocks in contents
         )
-        contents = [
+        contents = (
             content
             for page, blocks in contents
             for content in Notion._adapt_contents_to_model(page, blocks)
-        ]
+        )
 
         return contents
 
     def extract(self):
-        pages = self._extract_all_pages_recursively()
+        pages = list(self._extract_all_pages_recursively())
         contents = self._extract_content_from_pages(pages)
 
-        return [*pages, *contents]
+        return chain(pages, contents)
