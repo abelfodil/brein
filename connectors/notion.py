@@ -79,7 +79,7 @@ class Notion:
 
         content = contents[0]
         content.raw_content = "\n".join((content.raw_content for content in contents))
-        content.text = content = content.raw_content
+        content.text = content.raw_content
         return [content]
 
     def _adapt_contents_to_model(page, blocks):
