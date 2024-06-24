@@ -1,5 +1,6 @@
 import os
 from sqlmodel import SQLModel, Session, create_engine, select
+from more_itertools import batched
 from models.page import *
 from models.content import *
 
@@ -27,6 +28,7 @@ def read_all_values(model):
 
 def persist_entities(entities):
     with Session(engine) as session:
-        for entity in entities:
-            session.add(entity)
-        session.commit()
+        for entity_batch in batched(entities, 10):
+            for entity in entity_batch:
+                session.add(entity)
+            session.commit()
