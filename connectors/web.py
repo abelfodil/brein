@@ -55,5 +55,5 @@ class Web:
 
     def extract(self, pages: list[Page]):
         contents = (self._extract_from_page(page) for page in pages)
-        contents = [content for content in contents if content]
+        contents = (content for content in contents if content)
         return contents
