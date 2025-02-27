@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "brein"
+version = "0.1.0"
+description = "Your second brain"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests>=2.25.1",
+    "notion-client",
+    "sqlmodel",
+    "html2text",
+    "more-itertools",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "black>=23.3.0", "mypy>=1.0.0"]
+
+[tool.pytest.ini_options]
+addopts = "--verbose --cov=brein --cov-report=term-missing"
+testpaths = ["tests"]

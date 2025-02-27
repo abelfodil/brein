@@ -1,10 +1,10 @@
 from datetime import datetime
 from itertools import chain
-from models.content import Content
+from brein.models.content import Content
 from notion_client import Client as NotionClient
-from models.page import Page, PageType
-from utils.dict import filter_keys, list_to_dict, recursive_get
-from utils.log import log
+from brein.models.page import Page, PageType
+from brein.utils.dict import filter_keys, list_to_dict, recursive_get
+from brein.utils.log import log
 
 
 class Notion:

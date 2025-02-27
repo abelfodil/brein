@@ -1,8 +1,8 @@
 import os
 from sqlmodel import SQLModel, Session, create_engine, select
 from more_itertools import batched
-from models.page import *
-from models.content import *
+from brein.models.page import *
+from brein.models.content import *
 
 sqlite_file_name = "brein.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"

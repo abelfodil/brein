@@ -1,13 +1,13 @@
 import argparse
-from connectors.notion import Notion
-from connectors.database import (
+from brein.connectors.notion import Notion
+from brein.connectors.database import (
     create_db_and_tables,
     delete_db,
     persist_entities,
     read_all_values,
 )
-from connectors.web import Web
-from models.page import Page
+from brein.connectors.web import Web
+from brein.models.page import Page
 
 parser = argparse.ArgumentParser(prog="brein", description="Second brain")
 

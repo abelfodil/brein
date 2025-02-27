@@ -1,8 +1,8 @@
 from datetime import datetime
 from sqlmodel import Field, Relationship, SQLModel
 
-from models.page import Page
-from utils.uuid import uuid_generator
+from brein.models.page import Page
+from brein.utils.uuid import uuid_generator
 
 
 class Content(SQLModel, table=True):

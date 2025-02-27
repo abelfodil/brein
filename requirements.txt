@@ -1,4 +1,0 @@
-notion-client
-sqlmodel
-html2text
-more-itertools

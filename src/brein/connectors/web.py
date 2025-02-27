@@ -1,10 +1,10 @@
 from datetime import datetime
 import urllib.request
 from html2text import HTML2Text
-from models.content import Content
-from models.page import Page, PageType
-from utils.datetime import has_been_less_than, a_month_ago
-from utils.log import log
+from brein.models.content import Content
+from brein.models.page import Page, PageType
+from brein.utils.datetime import has_been_less_than, a_month_ago
+from brein.utils.log import log
 
 
 class Web:

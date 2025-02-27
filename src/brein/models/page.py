@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Optional
 from sqlmodel import Field, Relationship, SQLModel
 
-from utils.uuid import uuid_generator
+from brein.utils.uuid import uuid_generator
 
 
 class PageType(Enum):
