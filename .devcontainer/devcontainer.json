@@ -16,7 +16,8 @@
 				"tushortz.python-extended-snippets",
 				"mgesbert.python-path",
 				"ms-python.black-formatter",
-				"ms-python.isort"
+				"ms-python.isort",
+				"qwtel.sqlite-viewer"
 			]
 		}
 	}
