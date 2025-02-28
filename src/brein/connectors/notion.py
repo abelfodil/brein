@@ -44,7 +44,7 @@ class Notion:
 
         block_content = Notion._extract_rich_content_or_default(filtered_block)
 
-        return recursive_get(block_content, ["url"]) if block_content else None
+        return recursive_get(block_content, ["url", "href"]) if block_content else None
 
     def _flatten_block_with_children(block):
         return [block, *(block.get("children") or [])]
