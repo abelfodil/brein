@@ -11,10 +11,19 @@ def list_to_dict(l: list):
 
 
 def recursive_get(obj: dict, keys: list[str]):
-    if found_keys := set(keys).intersection(set(obj.keys())):
-        return obj[next(iter(found_keys))]
-    for k, v in obj.items():
-        if isinstance(v, dict):
-            item = recursive_get(v, keys)
-            if item is not None:
-                return item
+    stack = [obj]
+    found_keys = set(keys)
+
+    while stack:
+        current_obj = stack.pop()
+
+        if found_keys.intersection(current_obj.keys()):
+            return current_obj[next(iter(found_keys.intersection(current_obj.keys())))]
+
+        for value in current_obj.values():
+            if isinstance(value, dict):
+                stack.append(value)
+            if isinstance(value, list):
+                stack.extend(value)
+
+    return None
