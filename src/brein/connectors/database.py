@@ -30,5 +30,5 @@ def persist_entities(entities):
     with Session(engine) as session:
         for entity_batch in batched(entities, 10):
             for entity in entity_batch:
-                session.add(entity)
+                session.merge(entity)
             session.commit()
