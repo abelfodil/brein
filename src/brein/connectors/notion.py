@@ -33,13 +33,20 @@ class Notion:
 
     def _extract_content_from_block(notion_block):
         block_content = Notion._extract_rich_content_or_default(notion_block)
-        content = recursive_get(block_content, ["plain_text"])
+        content = recursive_get(block_content, ["title", "plain_text"])
         return content
 
     def _extract_url_from_block(notion_block):
         filtered_block = filter_keys(
             notion_block,
-            ["bulleted_list_item", "embed", "file", "link_preview"],
+            [
+                "bulleted_list_item",
+                "embed",
+                "file",
+                "link_preview",
+                "bookmark",
+                "mention",
+            ],
         )
 
         block_content = Notion._extract_rich_content_or_default(filtered_block)
