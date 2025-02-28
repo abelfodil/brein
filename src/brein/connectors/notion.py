@@ -17,13 +17,13 @@ class Notion:
         return Page(
             id=notion_page["id"],
             url=notion_page["url"],
-            title=recursive_get(notion_page, ["plain_text"]),
+            title=recursive_get(notion_page["properties"], ["plain_text"]),
             type=PageType.NotionPage,
         )
 
     def _extract_all_pages_recursively(self):
         results = self.notion.search()["results"]
-        results = (filter_keys(page, ["url", "plain_text", "id"]) for page in results)
+        results = (filter_keys(page, ["url", "properties", "id"]) for page in results)
         results = (Notion._adapt_page_to_model(page) for page in results)
         return results
 
