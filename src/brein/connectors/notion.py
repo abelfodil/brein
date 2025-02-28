@@ -13,7 +13,7 @@ class Notion:
     def __init__(self, notion_api_key):
         self.notion = NotionClient(auth=notion_api_key)
 
-    def _adapt_page_to_model(notion_page):
+    def _adapt_page_to_model(notion_page: dict):
         return Page(
             id=notion_page["id"],
             url=notion_page["url"],
