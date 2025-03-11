@@ -1,5 +1,6 @@
 from datetime import datetime
 from itertools import chain
+from typing import Iterable
 from brein.models.content import Content
 from notion_client import Client as NotionClient
 from brein.models.page import Page, PageType
@@ -124,7 +125,7 @@ class Notion:
 
         return contents
 
-    def extract(self):
+    def extract(self) -> Iterable[Page]:
         pages = list(self._extract_all_pages_recursively())
         contents = self._extract_content_from_pages(pages)
 
