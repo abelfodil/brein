@@ -12,8 +12,8 @@ class PageType(Enum):
 
 
 class Page(SQLModel, table=True):
-    id: str = Field(default_factory=uuid_generator, primary_key=True)
+    id: str = Field(default_factory=uuid_generator, index=True)
     title: Optional[str]
-    url: str
+    url: str = Field(default=None, primary_key=True)
     type: PageType
     content: Optional["Content"] = Relationship(back_populates="page", sa_relationship_kwargs={"lazy": "joined"})  # type: ignore
