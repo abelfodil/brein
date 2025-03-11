@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlmodel import Field, Relationship, SQLModel, Session
+from sqlmodel import Field, Relationship, SQLModel, Session, select
 from brein.models.page import Page
 from brein.utils.uuid import uuid_generator
 
@@ -18,7 +18,20 @@ class TextContent(SQLModel, table=True):
             return []
 
         with Session(engine) as session:
+            existing_contents = session.exec(
+                select(TextContent).where(
+                    TextContent.page_id.in_([c.page_id for c in contents])
+                )
+            ).all()
+            existing_content_map = {c.page_id: c for c in existing_contents}
+
             for content in contents:
-                session.merge(content)
+                if content.page_id in existing_content_map:
+                    content.id = existing_content_map[content.page_id].id
+                    session.merge(content)
+                else:
+                    session.add(content)
+
             session.commit()
+
             return contents
