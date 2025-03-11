@@ -3,7 +3,7 @@ from typing import Dict, Iterable, List
 import time
 import threading
 from brein.utils.log import log
-from brein.tasks.Task import Task, TaskStatus
+from brein.tasks.Task import Task
 
 
 class TaskManager:
@@ -38,8 +38,6 @@ class TaskManager:
                 # Retry with exponential backoff
                 if task.schedule_retry():
                     self.task_queue.put((task.next_retry_time, id, task))
-                else:
-                    task.update_status(TaskStatus.FAILED)
             finally:
                 self.task_queue.task_done()
 

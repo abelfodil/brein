@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from brein.connectors.notion import Notion
 from brein.models.content import Content
 from brein.tasks.ScrapeWebPageTask import ScrapeWebPageTask
-from brein.tasks.Task import Task, TaskStatus
+from brein.tasks.Task import Task
 from brein.models.page import Page, PageType
 from brein.utils.log import log
 from more_itertools import batched
@@ -13,8 +13,6 @@ from brein.connectors.database import engine
 @dataclass
 class NotionSyncTask(Task[str]):
     def execute(self):
-        self.update_status(TaskStatus.PROCESSING)
-
         try:
             notion_client = Notion(self.payload)
             page_or_content = notion_client.extract()
@@ -35,8 +33,6 @@ class NotionSyncTask(Task[str]):
                 )
                 tasks = (ScrapeWebPageTask(payload=page) for page in web_pages)
                 task_manager.add_tasks(tasks)
-
-            self.update_status(TaskStatus.SUCCESS)
         except Exception as e:
             log.error(f"Task {self.id} execution failed: {str(e)}")
             raise  # Re-raise to trigger retry
