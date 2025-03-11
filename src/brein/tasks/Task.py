@@ -1,7 +1,6 @@
 from brein.utils.log import log
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from enum import Enum
 import time
 from typing import TypeVar, Generic
 
@@ -23,7 +22,6 @@ class Task(Generic[Payload], ABC):
     @abstractmethod
     def execute(self):
         """Task-specific logic"""
-        pass
 
     def schedule_retry(self):
         """Calculate next retry time using exponential backoff"""

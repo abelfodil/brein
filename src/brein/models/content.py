@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlmodel import Field, Relationship, SQLModel, Session, select
+from sqlmodel import Field, Relationship, SQLModel, Session
 from brein.models.page import Page
 from brein.utils.uuid import uuid_generator
 

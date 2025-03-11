@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from brein.connectors.web import Web
 from brein.models.content import Content
 from brein.tasks.Task import Task
