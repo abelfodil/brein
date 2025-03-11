@@ -2,7 +2,7 @@ from datetime import datetime
 from io import StringIO
 import urllib.request
 from html2text import HTML2Text
-from brein.models.content import Content
+from brein.models.text_content import TextContent
 from brein.models.page import Page, PageType
 from brein.utils.datetime import has_been_less_than, a_month_ago
 from brein.utils.log import log
@@ -30,13 +30,15 @@ class Web:
     def _is_pdf(response):
         return response.getheader("Content-Type") == "application/pdf"
 
-    def scrape_page(page: Page) -> Content:
+    def scrape_page(page: Page) -> TextContent:
         page_name = page.title or page.url
 
         if page.type != PageType.WebPage:
             raise Exception(f"Page {page_name} is not a web page.")
 
-        if page.content and has_been_less_than(page.content.last_edit, a_month_ago):
+        if page.text_content and has_been_less_than(
+            page.text_content.last_edit, a_month_ago
+        ):
             log.info(f"Skippping {page_name} since the content is too recent.")
             return None
 
@@ -56,9 +58,9 @@ class Web:
         except Exception as e:
             raise Exception(f'Could not parse "{page_name}" web page. Error: {str(e)}.')
 
-        content = Content(page_id=page.id, raw_content=raw_html, text=text)
-        if page.content:
+        content = TextContent(page_id=page.id, raw_content=raw_html, text=text)
+        if page.text_content:
             content.last_edit = datetime.now()
-            content.id = page.content.id
+            content.id = page.text_content.id
 
         return content

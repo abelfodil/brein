@@ -1,7 +1,7 @@
 import os
 from sqlmodel import SQLModel, create_engine
 from brein.models.page import *
-from brein.models.content import *
+from brein.models.text_content import *
 
 sqlite_file_name = "brein.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"

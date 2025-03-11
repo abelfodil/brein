@@ -14,7 +14,7 @@ class Page(SQLModel, table=True):
     title: Optional[str]
     url: str = Field(default=None, primary_key=True)
     type: PageType
-    content: Optional["Content"] = Relationship(back_populates="page", sa_relationship_kwargs={"lazy": "joined"})  # type: ignore
+    text_content: Optional["TextContent"] = Relationship(back_populates="page", sa_relationship_kwargs={"lazy": "joined"})  # type: ignore
 
     @staticmethod
     def get_all_pages(engine) -> List["Page"]:

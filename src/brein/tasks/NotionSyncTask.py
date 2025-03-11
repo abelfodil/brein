@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from brein.connectors.notion import Notion
-from brein.models.content import Content
+from brein.models.text_content import TextContent
 from brein.tasks.ScrapeWebPageTask import ScrapeWebPageTask
 from brein.tasks.Task import Task
 from brein.models.page import Page, PageType
@@ -24,9 +24,9 @@ class NotionSyncTask(Task[str]):
                 page_batch = Page.insert(engine, page_batch)
 
                 content_batch = [
-                    item for item in page_or_content_batch if isinstance(item, Content)
+                    item for item in page_or_content_batch if isinstance(item, TextContent)
                 ]
-                content_batch = Content.insert(engine, content_batch)
+                content_batch = TextContent.insert(engine, content_batch)
 
                 web_pages = (
                     page for page in page_batch if page.type == PageType.WebPage

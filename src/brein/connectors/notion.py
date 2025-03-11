@@ -1,7 +1,7 @@
 from datetime import datetime
 from itertools import chain
 from typing import Iterable
-from brein.models.content import Content
+from brein.models.text_content import TextContent
 from notion_client import Client as NotionClient
 from brein.models.page import Page, PageType
 from brein.utils.dict import filter_keys, list_to_dict, recursive_get
@@ -74,7 +74,7 @@ class Notion:
             )
             if url
             else content
-            and Content(
+            and TextContent(
                 id=notion_block["id"],
                 page_id=page.id,
                 raw_content=content,
@@ -82,7 +82,7 @@ class Notion:
             )
         )
 
-    def _merge_contents(contents: list[Content]):
+    def _merge_contents(contents: list[TextContent]):
         if len(contents) == 0:
             return []
 
@@ -96,7 +96,7 @@ class Notion:
         contents = [content for content in contents if content]
         pages = (content for content in contents if isinstance(content, Page))
         contents = Notion._merge_contents(
-            [content for content in contents if isinstance(content, Content)]
+            [content for content in contents if isinstance(content, TextContent)]
         )
         return chain(pages, contents)
 
