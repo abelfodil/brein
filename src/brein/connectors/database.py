@@ -17,18 +17,3 @@ def delete_db():
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
-
-
-def read_all_values(model):
-    with Session(engine) as session:
-        statement = select(model)
-        results = session.exec(statement)
-        return results.all()
-
-
-def persist_entities(entities):
-    with Session(engine) as session:
-        for entity_batch in batched(entities, 10):
-            for entity in entity_batch:
-                session.merge(entity)
-            session.commit()
